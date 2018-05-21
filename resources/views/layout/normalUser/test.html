@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+    <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
+    <script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>
+    <link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">
+    <script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/locale/af.js"></script>
+
+
+
+    <link href="//cdnjs.cloudflare.com/ajax/libs/bootstrap-datetimepicker/4.17.37/css/bootstrap-datetimepicker.css" rel="stylesheet"
+    />
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet" />
+
+    <div id="date1"></div>
+
+    <script type="text/javascript">
+        $(function () {
+
+            var startDay = moment('2018-05-18');
+            var testD2 = moment('2018-07-02');
+
+
+            var minDate = moment().add(3, 'days');
+            var maxDate = moment("2018-06-19");
+            //限制只能選擇3天候
+            $('#date1').datetimepicker({
+                format: 'YYYY-MM-DD',
+                locale: moment.locale('zh-cn'),
+                inline: true,
+                sideBySide: true,
+                keepOpen: true,
+                minDate: minDate,
+                maxDate: maxDate,
+                disabledDates: [
+                    moment("2018-06-18"),
+                ],
+                icons: {
+                    up: "fa fa-chevron-circle-up",
+                    down: "fa fa-chevron-circle-down",
+                    next: 'fa fa-chevron-circle-right',
+                    previous: 'fa fa-chevron-circle-left'
+                }
+            });
+            $('#date1').datetimepicker('show');
+        })
+    </script>
+</body>
+
+</html>

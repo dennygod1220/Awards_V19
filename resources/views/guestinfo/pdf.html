@@ -1,0 +1,50 @@
+<html>
+
+<head>
+    <style type="text/css">
+        #target {
+            width: 300px;
+            height: 200px;
+            background: blue;
+            color: #fff;
+            padding: 10px;
+        }
+
+        button {
+            display: block;
+            height: 20px;
+            margin-top: 10px;
+            margin-bottom: 10px;
+        }
+    </style>
+    <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/0.4.1/html2canvas.js"></script>
+    <script type="text/javascript" src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+    <script language="javascript">
+        $(document).ready(function () {
+
+            window.takeScreenShot = function () {
+                html2canvas(document.getElementById("target"), {
+                    onrendered: function (canvas) {
+                        document.body.appendChild(canvas);
+                    },
+                    width: 600,
+                    height: 600
+                });
+            }
+        });
+    </script>
+</head>
+
+<body>
+    <div id="target">
+        Lorem ipsum dolor sit amet, consectetur adipiscing elit. Pellentesque quis eleifend elit. Donec lectus sem, scelerisque sit
+        amet facilisis quis, gravida a lacus. Nunc at lorem egestas, gravida lorem quis, pulvinar ante. Quisque id tempus
+        libero. Mauris hendrerit nunc risus, ac laoreet lectus gravida et. Nam euismod magna ac enim posuere sagittis. Fusce
+        at egestas enim, eu hendrerit enim.
+    </div>
+
+    <button onclick="takeScreenShot()">to image</button>
+    </div>
+</body>
+
+</html>

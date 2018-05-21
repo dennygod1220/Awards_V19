@@ -1,0 +1,326 @@
+ @layout('layout/normalUser/main')
+  @section('content')
+
+  <a href="/AudreySP/#formbody">
+    <img id="gonow" src="../img/new/BTN.png" alt="">
+  </a>
+
+<div class="carousel-item active">
+  <img src="../img/0510/index/homepage.png" class="img" alt="" style="width:100%">
+</div>
+<div class="row" style="height:50px">
+</div>
+
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+const wdth=$(window).width();
+
+if (wdth < 680) {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "40px")
+} else {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "80px")
+}
+$(window).resize(function () {
+  const wdth = $(window).width();
+  if (wdth < 680) {
+      $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "40px")
+  } else if (wdth > 680) {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "80px")
+  }
+})
+  
+</script>
+
+{{--  ====================================================================================  --}}
+
+
+
+ 
+<style>
+    {{--  隱藏的form input  --}}
+    .Invisible {
+      display: none;
+    }
+    {{--  紅色的星號  --}}
+    .isneedicon{
+        color:red;
+    }
+</style>
+
+
+
+
+    @if(old('NoWinMessage'))
+    <div class="alert alert-danger">
+      {{ old('NoWinMessage') }}
+    </div>
+    @endif
+
+<form action="/AudreySP/" method="POST">
+  {{ csrfField() }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <div class="card" id="formbody2">
+        <div class="card-body" id="formbody">
+          <div class="form-group" id="group">
+            <label><span class="isneedicon">*</span>您的發票號碼 : <small style="color:#6c757d">(一人一張單筆520元以上發票，只能預約一次)</small></label>
+            <input type="text" name="invoice_num" class="form-control" placeholder="輸入範例:AB89736950" id="invoice_in">
+            <small class="form-text text-danger" id="twoEn" style="display:none">請注意:前兩字元皆為大寫英文字母</small>
+            <small class="form-text text-danger" id="eightnum" style="display:none">請注意:後8字元皆為數字</small>            
+            @if(hasErrorFor('invoice_num'))
+            <small class="form-text text-danger">{{getErrorFor('invoice_num')}}</small>
+            @endif
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
+
+
+
+
+
+
+  <div style="height:40px;"></div>
+  {{--  <div class="container-fluid">  --}}
+    <div class="row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2" style="text-align:center;">
+        <button type="submit" id="submitbtn" class="btn btn-info" disabled>送出發票號碼</button>
+      </div>
+      <div class="col-sm-5"></div>
+    </div>
+  {{--  </div>  --}}
+
+</form>
+
+
+<div style="height:40px;"></div>
+
+
+    {{-- ========================================= --}}
+<form action="faker" method="POST" style="display:none">
+  {{ csrfField() }}
+<fieldset disabled>
+      <div class="container-fluid">
+        <div class="row">
+        <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+              <div class="card">
+                  <div class="card-body">
+            <div class="form-group">
+              <label for="store">
+                <span class="isneedicon">*</span>您選擇的店櫃:</label>
+              <select name="store_area" id="store_area" class="form-control" readonly="readonly"></select>
+              <select name="store_id" id="store_id" class="form-control" readonly="readonly"></select>
+
+              <input type="text" name="store_area" class="form-control Invisible" readonly="readonly">
+              <input type="text" class="form-control Invisible" name="store_id" value="{{old('store_id','')}}" aria-describedby="store_idHelp" readonly="readonly">
+            </div>
+            <div class="form-group">
+              <label for="date">
+                <span class="isneedicon">*</span>您選擇的日期:</label>
+              <div>{{-- 透過月曆元件產生，js在layout/normalUser/forguestinfo中 --}}</div>
+              <div class="input-group datepicker date" id='date1'>
+                <input name="date" type="hidden" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group" id="whattime">
+              <label for="time">
+                <span class="isneedicon">*</span>您預約的時段:</label>
+              <select id="select_time" class="form-control" readonly="readonly">
+
+              </select>
+              <input id="inputTime" type="text" name="time" class="form-control Invisible" aria-describedby="timeHelp" readonly="readonly">
+            </div>
+
+          <div class="form-group" id="size">
+            <label for="guest_size">
+              <span class="isneedicon">*</span>您的尺寸:</label>
+            <select id="selectsize" class="form-control"  readonly="readonly">
+              <option v-for="sizes in size">
+                [[sizes]]
+              </option>
+            </select>
+            <input id="input_size" type="text" name="guest_size" class="form-control Invisible">
+          </div>
+
+            </div>
+
+
+
+            </div>
+          </div>
+          <div class="col-sm-4">
+              <div class="card">
+                  <div class="card-body">
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>請填寫身份證上的中文名字:</label>
+              <input type="text" name="guest_name" class="form-control" placeholder="請填寫身份證上的中文名字" readonly="readonly">
+            </div>
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>行動電話:</label>
+              <input type="text" name="cell_phone" class="form-control" placeholder="請輸入您的行動電話號碼" aria-describedby="phoneHelp" readonly="readonly">
+            </div>
+
+            <div class="form-group" id="birdaybody">
+              <label>
+                <span class="isneedicon">*</span>出生日期:</label>
+              {{-- 生日 年 --}}
+
+              <span class="form-inline">
+                年:
+                <select id="#birth_Y" class="form-control" v-model="birthday_Y2" readonly="readonly">
+                  <option v-for="birthday_Y in birthday_Y">
+                    [[birthday_Y]]
+                  </option>
+                </select>
+                月:
+                <select id="#birth_M" class="form-control" v-model="birthday_M2" readonly="readonly">
+                  <option v-for="birthday_M in birthday_M">
+                    [[birthday_M]]
+                  </option>
+                </select>
+                日:
+                <select id="#birth_D" class="form-control\" v-model="birthday_D2" readonly="readonly">
+                  <option v-for="birthday_D in birthday_D">
+                    [[birthday_D]]
+                  </option>
+                </select>
+                <div style="display:none;">
+                  <input type="text" name="birthday" class="form-control Invisible" v-model="combination_birthday" readonly="readonly">
+                  <div class="Invisible"> [[combination_birthday]] </div>
+                </div>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>E-mail:</label>
+              <input type="email" name="email" class="form-control" aria-describedby="emailHelp" readonly="readonly">
+            </div>
+            <div class="form-group">
+              <label>特殊需求:</label>
+              <textarea name="special_need" cols="30" rows="8" class="form-control" readonly="readonly">
+              </textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+  <div class="col-sm-2"></div>
+  <div style="height:40px;"></div>
+  <div class="row">
+    {{--  <label id="cannotSubmit" class="btn form-control btn-info" readonly="readonly">立即預約</button>  --}}
+  </div>
+
+<div class="row">
+  <div class="col-sm-5"></div>
+  <div class="col-sm-2">
+    <label id="cannotSubmit" class="btn form-control btn-info">確認預約</label>
+  </div>
+  <div class="col-sm-5"></div>
+</div>
+</fieldset>
+</form>
+
+
+<script>
+$(function () {
+  $("#invoice_in").keyup(function () {
+      var str = $("#invoice_in").val();
+      //當輸入超過10個字
+      if (str.length > 10) {
+        var newStr = "";
+        for (var i = 0; i < 10; i++) {
+          newStr = newStr + str.charAt(i);
+        }
+        $("#invoice_in").val(newStr);
+      } else {
+        var isOK=[];
+        for (var i = 0; i < str.length; i++) {
+          check(i);
+          isOK[i]=check(i); 
+        }
+        var yes=0;
+        for(var i=0;i<str.length;i++){
+          if(isOK[i] == true){
+            yes++;
+          }
+        }
+        if(yes == 10){
+          $("#invoice_in").attr('class', 'form-control');
+           $("#submitbtn").removeAttr('disabled', 'true');
+           $("#eightnum").css('display','none');
+        }else if(isOK[0]==true&&isOK[1]==true&&yes<10){
+          $("#submitbtn").attr('disabled', 'true');
+          $("#eightnum").css('display','inline');
+        }
+        else{
+            $("#invoice_in").attr('class', 'form-control border-danger');
+            $("#submitbtn").attr('disabled', 'true');
+            if(isOK[0] == false || isOK[1] == false){
+              $("#twoEn").css('display','inline');
+            }else{
+              $("#twoEn").css('display','none');         
+            }
+        }
+      }
+
+      function check(num) {
+        //確認是否英文
+        var pattern2 = new RegExp("[A-Z]+");
+        if (num < 2) {
+          if (pattern2.test(str.charAt(num))) {
+            return true;
+          } else {
+            return false;
+          }
+          //確認是否是數字
+        } else if (num >= 2 || num < 10) {
+          var pattern3 = new RegExp("[0-9]+");
+          if (pattern3.test(str.charAt(num))) {
+            return true;
+          } else {
+            return false;
+          }
+        }
+      }
+  })
+})
+</script>
+
+
+
+
+{{ script('https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js')}}
+{{ script('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')}}
+{{ script('../js/guestinfo.js') }}
+
+
+
+
+
+@endsection
+

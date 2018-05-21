@@ -1,0 +1,33 @@
+ @layout('layout/normalUser/main') 
+ @section('content')
+
+  <a href="/AudreySP/#formbody">
+    <img id="gonow" src="../img/0510/testdress/BTN.png" alt="">
+  </a>
+
+<div class="carousel-item active">
+  <img src="../img/0510/underwearsecrect/swswsw.jpg" class="img-fluid mx-auto"  alt="">
+</div>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+const wdth=$(window).width();
+$("#gonow").css("position","fixed")
+$("#gonow").css("z-index","99")
+$("#gonow").css("margin-top","60px")
+$("#gonow").css("width","80px")
+if(wdth < 680){
+  $("#gonow").css("display","none")
+}
+$(window).resize(function() {
+  const wdth=$(window).width();
+  if(wdth < 680){
+    $("#gonow").css("display","none")
+  }else if(wdth >680){
+    $("#gonow").css("display","inline")
+    $("#gonow").css("position","fixed")
+  }
+})
+  
+</script>
+@endsection

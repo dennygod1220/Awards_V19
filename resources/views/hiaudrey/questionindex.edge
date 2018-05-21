@@ -1,0 +1,73 @@
+
+@layout('layout/auth/main')
+ @section('content')
+
+<div style="height:38px;background-color:#212529;">
+@if(old('notification'))
+    <div class="alert alert-danger">
+        {{ old('notification') }}
+    </div>
+@endif
+@if(old('addsucess'))
+    <div class="alert alert-success">
+        {{ old('addsucess') }}
+    </div>
+@endif
+@if(old('loginsucess'))
+    <div class="alert alert-success">
+        {{ old('loginsucess') }}
+    </div>
+@endif
+</div>
+
+<div class="row">
+    <div class="col">
+        <a href="/AudreySP/writequestion" class="btn btn-outline-primary">填寫問卷</a>
+        <a href="/AudreySP/downloadQu" class="btn btn-outline-primary">下載</a>
+    </div>
+
+</div>
+
+<table class="table table-bordered table-hover" style="text-align:center;">
+  <thead class="thead-dark">
+    <tr>
+    <th scope="col">櫃號</th>
+    <th scope="col">櫃名</th>
+    <th scope="col">預約日期</th>
+    <th scope="col">時段</th>
+    <th scope="col">姓名</th>
+    <th scope="col">行動電話</th>
+    <th scope="col">驗證碼</th>
+    <th scope="col">試穿尺寸</th>
+    <th scope="col">兌換尺寸</th>
+    <th scope="col">是否完成</th>
+    <th scope="col">未完成原因</th>
+    <th scope="col">兌換貨號</th>
+    
+    
+    <th scope="col"></th>    
+    </tr>
+  </thead>
+  <tbody>
+    @each(question in question_data)
+    <tr>
+      <td>{{question.qu_store_num}}</td>
+      <td>{{question.qu_store_name}}</td>
+      <td>{{question.qu_test_date}}</td>
+      <td>{{question.qu_1_1_2}}</td>
+      <td>{{question.qu_1_1_3}}</td>
+      <td>{{question.qu_1_2_2}}</td>
+      <td>{{question.qu_1_2_1}}</td>  
+      <td>{{question.qu_test_size}}</td>  
+      <td>{{question.qu_size}}</td>  
+      <td>{{question.qu_2_1}}</td>  
+      <td>{{question.qu_1_1_1}}</td> 
+      <td>{{question.qu_1_2_3}}</td>  
+       
+      
+      <td><a href="/AudreySP/question/delete/{{question.id}}" class="btn btn-outline-danger">刪除</a> </td>
+    </tr>
+    @endeach
+  </tbody>
+</table>
+@endsection

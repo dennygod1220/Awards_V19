@@ -1,0 +1,42 @@
+ @layout('layout/normalUser/main')
+  @section('content')
+
+      <a href="/AudreySP/#formbody">
+      <img id="gonow" src="../img/0510/testdress/BTN.png" alt="">
+    </a>
+  <div class="carousel-item active">
+    <img src="../img/0510/testdress/try_all.jpg" class="img-fluid mx-auto" alt="">
+  </div>
+
+<script src="https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js"></script>
+<script>
+const wdth=$(window).width();
+
+if (wdth < 680) {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "40px")
+} else {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "80px")
+}
+$(window).resize(function () {
+  const wdth = $(window).width();
+  if (wdth < 680) {
+      $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "40px")
+  } else if (wdth > 680) {
+  $("#gonow").css("position", "fixed")
+  $("#gonow").css("z-index", "99")
+  $("#gonow").css("margin-top", "60px")
+  $("#gonow").css("width", "80px")
+  }
+})
+  
+</script>
+@endsection

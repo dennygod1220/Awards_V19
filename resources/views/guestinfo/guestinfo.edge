@@ -1,0 +1,463 @@
+ @layout('layout/normalUser/main')
+  @section('content')
+<div class="row no-gutters">
+<div class="col">
+  <img src="../img/0510/index/homepage.png" class="img" alt="" style="width:100%">
+  <a href="/#formbody">
+  </a>
+</div>
+</div>
+
+<div class="row" style="height:50px" id="magicalDIV">
+</div>
+
+{{--  ====================================================================================  --}}
+
+
+
+ 
+<style>
+    {{--  隱藏的form input  --}}
+    .Invisible {
+      display: none;
+    }
+    {{--  紅色的星號  --}}
+    .isneedicon{
+        color:red;
+    }
+    .modal-body>p{
+      font-size:10px;
+    }
+</style>
+
+
+
+
+    @if(old('NoWinMessage'))
+    <div class="alert alert-danger">
+      {{ old('NoWinMessage') }}
+    </div>
+    @endif
+
+<form action="" method="POST">
+<fieldset disabled>
+  {{ csrfField() }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <div class="card" id="formbody2">
+        <div class="card-body" id="formbody">
+          <div class="form-group">
+            <label><span class="isneedicon">*</span>您的發票號碼:</label>
+            <input type="text" name="invoice_num" class="form-control" placeholder="發票號碼" value="{{invoicenum}}" readonly="readonly">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
+
+
+
+
+
+
+  <div style="height:40px;"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2" style="text-align:center;">
+        <a href="/invoiceok#magicalDIV" class="btn btn-info" readonly="readonly">送出發票號碼</a>
+      </div>
+      <div class="col-sm-5"></div>
+    </div>
+  </div>
+</fieldset>
+</form>
+
+
+<div style="height:40px;"></div>
+
+    {{-- ========================================= --}}
+<div id="test123">
+<form action="{{ route('GuestinfoController.store')}}" method="POST" id="guestinfoform">
+  {{ csrfField() }}
+
+      <div class="container-fluid">
+        <div class="row">
+          <div class="col-sm-2"></div>
+            <div class="col-sm-4">
+              <div class="card">
+              <div class="card-body">
+              <div id="leftside">
+            <div class="form-group">
+              <label for="store">
+                <span class="isneedicon">*</span>您選擇的店櫃:</label>
+              <select id="store_area" class="form-control">
+                   <option value="請選擇地區">請選擇地區</option>
+                @each(items in store_area_distinct)
+                  <option value="{{items.store_area}}">{{items.store_area}}</option>
+                @endeach
+              </select>
+
+              <select id="store_id" class="form-control">
+
+              </select>
+              <small class="form-text text-info" id="storeadd"></small>
+              <small class="form-text text-info Invisible" id="storephone"></small>
+              
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('store_id'))
+              <small class="form-text text-danger">店櫃忘了填</small>
+              @endif
+              {{--  ===================================  --}}
+
+              <input type="text" name="store_id" class="form-control Invisible" id="real_store_id">
+              {{--  <input type="text" class="form-control" name="store_id" value="{{old('store_id','')}}" aria-describedby="store_idHelp" >  --}}
+            </div>
+            <div class="form-group" style="display:none" id="datepart">
+              <label for="date">
+                <span class="isneedicon">*</span>您選擇的日期:</label>
+              <div>{{-- 透過月曆元件產生，js在layout/normalUser/forguestinfo中 --}}</div>
+              <div class="input-group datepicker date" id='date1' style="display: inline-block;margin: 0 auto;">
+                <input id="inpdate" name="date" type="hidden" class="form-control">
+              </div>
+
+            </div>
+
+            <div class="form-group" id="whattime" style="display:none">
+              <label for="time">
+                <span class="isneedicon">*</span>您預約的時段:</label>
+              <select id="select_time" name="time" class="form-control" disabled>
+                <option>
+
+                </option>
+              </select>
+              <div></div>
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('time'))
+              <small class="form-text text-danger">請選擇時段</small>
+              @endif
+              {{--  ===================================  --}}
+              
+
+              {{--  <input id="inputTime" type="text" name="time" class="form-control" aria-describedby="timeHelp" >  --}}
+            </div>
+                        <div class="form-group" id="size" style="display:none">
+              <label for="guest_size">
+                <span class="isneedicon">*</span>您的尺寸:</label>
+              <select id="selectsize" class="form-control"  v-on:change="checksize" disabled>
+                <option v-for="sizes in size_in">[[sizes]]</option>
+              </select>
+              {{--  <input id="fake_size" type="text" class="form-control"  v-on:change="checksize">  --}}
+              <input id="input_size" type="text" name="guest_size" class="form-control Invisible" v-model="selectsize" >
+              
+            </div>
+          </div>
+
+
+            </div>
+            </div>
+          </div>
+
+
+      <div class="col-sm-4">
+        <div class="card" style="display:none" id="rightpart">
+          <div class="card-body">
+            <div class="form-group" style="display:none" id="namepart">
+              <label>
+                <span class="isneedicon">*</span>請填寫身份證上的中文名字:</label>
+              <input type="text" id="inputname" name="guest_name" class="form-control" placeholder="請填寫身份證上的中文名字" readonly> 
+              {{-- validator 驗證是否有填值 --}} 
+              @if(hasErrorFor('guest_name'))
+              <small class="form-text text-danger">請填姓名</small>
+              @endif
+               {{-- =================================== --}}
+            </div>
+            <div class="form-group" style="display:none" id="phonepart">
+              <label>
+                <span class="isneedicon">*</span>行動電話:<small class="form-text text-danger" id="phonealert">務必為本人門號，以便發送邀請簡訊</small></label>
+
+                
+              <input type="text" id="inputcellphone" name="cell_phone" class="form-control" placeholder="請輸入您的行動電話號碼" aria-describedby="phoneHelp" readonly> 
+                {{-- validator 驗證是否有填值 --}} 
+                @if(hasErrorFor('cell_phone'))
+              <small class="form-text text-danger">請填入手機號碼</small>
+              @endif 
+              {{-- =================================== --}}
+
+
+            </div>
+
+            <div class="form-group" id="birdaybody" style="display:none">
+              <label>
+                <span class="isneedicon">*</span>出生日期:<small class="form-text text-danger">未成年者請徵求父母或監護人同意</small></label>
+              {{-- 生日 年 --}}
+                
+              <span class="form-inline">
+                年:
+                <select id="#birth_Y" class="form-control" v-model="birthday_Y2">
+                  <option v-for="birthday_Y in birthday_Y">
+                    [[birthday_Y]]
+                  </option>
+                </select>
+                月:
+                <select id="#birth_M" class="form-control" v-model="birthday_M2">
+                  <option v-for="birthday_M in birthday_M">
+                    [[birthday_M]]
+                  </option>
+                </select>
+                日:
+                <select id="#birth_D" class="form-control" v-model="birthday_D2">
+                  <option v-for="birthday_D in birthday_D">
+                    [[birthday_D]]
+                  </option>
+                </select>
+
+                {{-- validator 驗證是否有填值 --}} 
+                @if(hasErrorFor('birthday'))
+                <small class="form-text text-danger">請選擇生日</small>
+                @endif 
+                {{-- =================================== --}}
+
+                <div style="display:none">
+                  <input type="text" name="birthday" class="form-control" v-model="combination_birthday" id="inBirth">
+                  <div class="Invisible"> [[combination_birthday]] </div>
+                </div>
+              </span>
+            </div>
+
+            <div class="form-group" id="emailpart">
+              <label>
+                <span class="isneedicon">*</span>E-mail:</label>
+              <input type="email" name="email" class="form-control" aria-describedby="emailHelp" id="inputemail"> 
+              {{-- validator 驗證是否有填值 --}} 
+              @if(hasErrorFor('email'))
+              <small class="form-text text-danger">請填入email</small>
+              @endif 
+              {{-- =================================== --}}
+            </div>
+
+            <input type="text" name="guest_invoice" class="Invisible" value="{{invoicenum}}">
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+<div class="col-sm-2"></div>
+<div style="height:40px;"></div>
+<div class="row">
+  <div class="col-sm-5"></div>
+  <div class="col-sm-2">
+    {{--  <button id="submitbtn" class="btn form-control btn-info">確認預約</button>  --}}
+    <!-- Button trigger modal -->
+<button type="button" class="btn form-control btn-info"  id="confirm1">
+  確認預約
+</button>
+
+<!-- Modal  是否同意隱私權-->
+<div class="modal fade" id="exampleModalLong" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin: 0px auto;">
+        <img src="../img/new/audreylogo.png" style="align:center;max-height: 100px;" class="img-fluid mx-auto" alt="">   
+      </div>
+      <div class="modal-body">
+        <h5>同意隱私權保密條款</h5>
+        <p>台灣奧黛莉股份有限公司十分重視您的隱私權保護，將依個人資料保護法及本隱私權政策蒐集、處理及利用您的個人資料，並提供您對個人資料權利之行使與保護。若您不同意本隱私權政策之全部或部分者，請您停止使用本網站服務。</p>
+        <br>
+        <h5>本隱私權政策適用之範圍</h5>
+        <p>請您在於使用本網站服務前，確認您已審閱並同意本隱私權政策所列全部條款，若您不同意全部或部分者，則請勿使用本網站服務。本隱私權政策僅適用於本網站對您個人資料所為蒐集、處理聯繫活動與服務之所用途。</p>
+        <br>
+        <h5>個人資料保護法應告知事--</h5>
+        <p>(1)蒐集機關名稱：台灣奧黛莉股份有限公司</p>
+        <p>(2)蒐集目的：提供本公司相關服務、行銷、客戶會員管理及其他與第三人合作之行銷推廣活動</p>
+        <p>(3)個人資料類別：識別類(姓名、性別特徵、聯絡電話、電子郵件信箱）、其他(往來電子郵件、網站留言、系統自動紀錄之軌跡資訊等)。</p>
+        <p>(4)個人資料利用期間：本網站會員有效期間及終止後六個月；若非會員則於該蒐集個人資料之目的消失後六個月。</p>
+        <p>(5)個人資料利用地區：本公司執行業務及伺服器主機所在地，目前為台灣地區。</p>
+        <p>(6)個人資料利用對象：本公司及本公司委外之協力廠商 (例如：提供物流、金流或活動贈品、網站系統廠商)如為本公司與其他廠商共同蒐集者，將於該共同蒐集之活動中載明。</p>
+        <p>(7)個人資料利用方式：依蒐集目的範圍及本隱私權政策進行利用。</p>
+        <p>(8)行使個人資料權利方式：依個人資料保護法第3條規定，您就您的個人資料享有查詢或請求閱覽、請求製給複製本、請求補充或更正、請求停止蒐集、處理或利用、請求刪除之權利。您可以書面郵寄至【40767台中市西屯區工業區三路6號】方式行使上開權利，本公司將於收悉您的請求後，儘速處理。</p>
+        <p>(9)個人資料選填說明：若本公司於蒐集個人資料時，相關網頁或文件載明為選填者，僅為提供您使用本網站更佳體驗，不影響您使用本網站之權益。 個人資料蒐集、處理及利用說明，本公司可能透過Facebook或類似社群服務系統，於取得您的同意後，將部分本網站的資訊發布於您的社群活動資訊頁面，若您不同意該等訊息之發布，請您勿點選同意鍵，或於事後透過各該社群服務之會員機制移除該等資訊或拒絕本網站繼續發布相關訊息。若有任何問題，仍可與本公司聯絡，本公司將協助您確認、處理相關問題。
+          除依法應提供予司法、檢調機關、相關主管機關，或與本公司協力廠商為執行相關活動必要範圍之利用外，本公司將不會任意將您的個人資料提供予第三人。
+        </p>
+        <br>
+        <h5>Cookie技術</h5>
+        <p>為便於日後的辨識，當您使用本網站服務時，本公司可能曾在您的電腦上設定與存取Cookie。您可以透過設定您的個人電腦或上網設備，決定是否允許Cookie技術的使用，若您關閉Cookie時，可能會造成您使用本網站服務時之不便利或部分功能限制。</p>
+        <br>
+        <h5>保密與安全性</h5>
+        <p>本公司之員工，僅於其為您提供產品或服務之需求範園內，對於您的個人資料得為有限之接觸。為了保護您的帳戶及個人資料的安全，請您不要任意將個人帳號、密碼提供予第三人或允許第三人以您的個人資料申請帳號、密碼,否則,相關責任由您自行負擔。若您的帳號、密碼有外洩之處，請您立即更改密碼，或通知本公司暫停該帳號《本公司可能會要求核對您的個人資料)。
+          網際網路並不是一個安全的資訊傳輸環境，請您在使用本網站時，避免將敏感的個人資料提供予他人或在網站上公開揭露。
+        </p>
+        <br>
+        <h5>免責聲明</h5>
+        <p>當您成為(https://ez2o.co/3Twk7)網站(以下簡稱「本網站」)的用戶後，您已詳細閱讀及明確瞭解本『免責聲明』並同意，屬下列情况發生時本網站毋需負擔任何責任：</p>
+        <p>1. 您使用本站服務之風險由您個人承擔。用戶同意使用「本網站」各項服務系基於用戶的個人意願，並同意自負任何風險，包括因為自「本網站」下載資料或圖片，或自「本網站」服務中獲得之資料等致發生任何資源流失等結果。</p>
+        <p>2. 「本網站」就各項服務，不負任何明示或默示之擔保責任。「本網站」不保證各項服務之穩定、安全、無誤、及不中斷；用戶明示承擔使用本服務之所有風險及可能發生之任何損害。 用戶在「本網站」填寫之物件資訊、個人資料等行為，純屬用戶個人行為，「本網站」對其內容之真實性或完整性不負有任何責任。
+        </p>
+        <p>3. 任何由於電腦病毒侵入或發作、因政府管制而造成的暫時性關閉等影響網路正常經營之不可抗力而造成的資料毀損、丟失、被盗用或被竄改等與「本網站」無關。</p>
+        <p>4. 對於用戶透過「本網站」刊登或發佈虛假、違法資訊、侵害他人權益及欺騙 、敲詐行為者，純屬用戶個人行為「本網站」對因此而產生的一切糾紛不負任何責任！特此聲明！</p>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btnleave" data-dismiss="modal">不同意</button>
+        <button type="button" class="btn btn-primary" id="invisible_ag" data-toggle="modal" data-target="#exampleModalLong2">同意</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+{{--  同意隱私權後確認資料  --}}
+<div class="modal fade" id="exampleModalLong2" tabindex="-1" role="dialog" aria-labelledby="exampleModalLongTitle" aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin: 0px auto;">
+        <img src="../img/new/audreylogo.png" style="align:center;max-height: 100px;" class="img-fluid mx-auto" alt="">   
+      </div>
+      <div class="modal-body" id="confirm_data" style="    line-height: 3px;">
+        
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary btnleave" data-dismiss="modal">重新填寫</button>
+        <button type="button" class="btn btn-primary" id="pdf">下載預約資料</button>        
+        <button type="button" class="btn btn-primary" id="submitbtn">確認</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+
+
+  </div>
+
+  <div class="col-sm-5"></div>
+</div>
+</form>
+</div>
+
+
+
+
+{{--  沒填完資料的提醒  --}}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter3" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin: 0px auto;">
+        <img src="../img/new/audreylogo.png" style="align:center;max-height: 100px;" class="img-fluid mx-auto" alt="">   
+      </div>
+      <div class="modal-body">
+        請確認資料輸入完成，謝謝
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+{{--  時段以滿提醒 --}}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter4" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin: 0px auto;">
+        <img src="../img/new/audreylogo.png" style="align:center;max-height: 100px;" class="img-fluid mx-auto" alt="">   
+      </div>
+      <div class="modal-body">
+        此時段預約已滿，請重新選擇，謝謝
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+{{--  選擇其他尺寸時的提醒  --}}
+<!-- Modal -->
+<div class="modal fade" id="exampleModalCenter6" tabindex="-1" role="dialog" aria-labelledby="exampleModalCenterTitle" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered" role="document">
+    <div class="modal-content">
+      <div class="modal-header" style="margin: 0px auto;">
+        <img src="../img/new/audreylogo.png" style="align:center;max-height: 100px;" class="img-fluid mx-auto" alt="">   
+      </div>
+      <div class="modal-body">
+       『提醒您：本次體驗試穿之新品罩杯尺寸為 CD70-80;E70-75，如無法成功完成體驗試穿並填寫問券,恕無法享有免費送內衣!』
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">關閉</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<select id="invisible_storearea" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.store_area}}</option> 
+  @endeach
+</select>
+
+<select id="invisible_storenamed" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.store_name}}</option>
+  @endeach
+</select>
+
+<select id="invisible_storeaddress" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.sotre_address}}</option>
+  @endeach
+</select>
+
+<select id="invisible_storephone" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.store_phone}}</option>
+  @endeach
+</select>
+
+<select id="invisible_store_status_date" class="Invisible">
+  @each(item in store_status)
+  <option value="{{item.store_id}}">{{item.date}}</option>
+  @endeach
+</select>
+
+<select id="invisible_store_status_time" class="Invisible">
+  @each(item in store_status)
+  <option value="{{item.store_id}}">{{item.time}}</option>
+  @endeach
+</select>
+
+<select id="invisible_storetime" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.time_id}}</option>
+  @endeach
+</select>
+
+
+<script src="../lib/html2canvas.js"></script>
+<script src="../lib/jspdf.js"></script>
+
+{{ script('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')}}
+{{ script('https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js')}}
+{{ script('../js/guestinfo.js') }}
+{{ script('../js/onlyguestinfo.js') }}
+
+
+
+@endsection
+
+
+
+
+
+
+
+

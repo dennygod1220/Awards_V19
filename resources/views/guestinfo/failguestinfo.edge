@@ -1,0 +1,292 @@
+ @layout('layout/normalUser/main')
+  @section('content')
+<div class="row no-gutters">
+<div class="col">
+  <img src="../img/index.png" class="img" alt="" style="width:100%">
+  <a href="/AudreySP/#formbody">
+    <img id="gonow" src="../img/new/BTN.png" alt="">
+  </a>
+</div>
+</div>
+
+<div class="row" style="height:50px" id="magicalDIV">
+</div>
+
+{{--  ====================================================================================  --}}
+
+
+
+ 
+<style>
+    {{--  隱藏的form input  --}}
+    .Invisible {
+      display: none;
+    }
+    {{--  紅色的星號  --}}
+    .isneedicon{
+        color:red;
+    }
+</style>
+
+
+
+
+    @if(old('NoWinMessage'))
+    <div class="alert alert-danger">
+      {{ old('NoWinMessage') }}
+    </div>
+    @endif
+
+<form action="" method="POST">
+<fieldset disabled>
+  {{ csrfField() }}
+<div class="container-fluid">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <div class="col-sm-8">
+      <div class="card" id="formbody2">
+        <div class="card-body" id="formbody">
+          <div class="form-group">
+            <label>您的發票號碼:</label>
+            <input type="text" name="invoice_num" class="form-control" placeholder="發票號碼" value="{{invoicenum}}" readonly="readonly">
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-sm-2"></div>
+</div>
+
+
+
+
+
+
+  <div style="height:40px;"></div>
+  <div class="container-fluid">
+    <div class="row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2" style="text-align:center;">
+        <a href="/AudreySP/invoiceok#magicalDIV" class="btn btn-info" readonly="readonly">送出發票</a>
+      </div>
+      <div class="col-sm-5"></div>
+    </div>
+  </div>
+</fieldset>
+</form>
+
+
+<div style="height:40px;"></div>
+
+
+    {{-- ========================================= --}}
+<form action="{{ route('GuestinfoController.store')}}" method="POST" id="guestinfoform">
+  {{ csrfField() }}
+
+      <div class="container-fluid">
+        <div class="row">
+        <div class="col-sm-2"></div>
+          <div class="col-sm-4">
+              <div class="card">
+              <div class="card-body">
+              <div id="leftside">
+            <div class="form-group">
+              <label for="store">
+                <span class="isneedicon">*</span>您選擇的店櫃:</label>
+              <select id="store_area" class="form-control">
+                   <option value="請選擇地區">請選擇地區</option>
+                @each(items in store_area_distinct)
+                  <option value="{{items.store_area}}">{{items.store_area}}</option>
+                @endeach
+              </select>
+
+              <select id="store_id" class="form-control">
+
+              </select>
+
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('store_id'))
+              <small class="form-text text-danger">店櫃忘了填</small>
+              @endif
+              {{--  ===================================  --}}
+
+              <input type="text" name="store_id" class="form-control Invisible" id="real_store_id">
+              {{--  <input type="text" class="form-control" name="store_id" value="{{old('store_id','')}}" aria-describedby="store_idHelp" >  --}}
+            </div>
+            <div class="form-group">
+              <label for="date">
+                <span class="isneedicon">*</span>您選擇的日期:</label>
+              <div>{{-- 透過月曆元件產生，js在layout/normalUser/forguestinfo中 --}}</div>
+              <div class="input-group datepicker date" id='date1'>
+                <input id="inpdate" name="date" type="hidden" class="form-control">
+              </div>
+            </div>
+
+            <div class="form-group" id="whattime">
+              <label for="time">
+                <span class="isneedicon">*</span>您預約的時段:</label>
+              <select id="select_time" name="time" class="form-control" >
+                <option>
+
+                </option>
+              </select>
+              <div></div>
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('time'))
+              <small class="form-text text-danger">請選擇時段</small>
+              @endif
+              {{--  ===================================  --}}
+              
+
+              {{--  <input id="inputTime" type="text" name="time" class="form-control" aria-describedby="timeHelp" >  --}}
+            </div>
+</div>
+            <div class="form-group" id="size">
+              <label for="guest_size">
+                <span class="isneedicon">*</span>您的尺寸:</label>
+              {{--  <select id="selectsize" class="form-control"><option v-for="sizes in size">[[sizes]]</option></select>  --}}
+              <input id="fake_size" type="text" class="form-control"  v-on:change="checksize">
+              <input id="input_size" type="text" name="guest_size" class="form-control" v-model="selectsize" >
+            </div>
+
+            </div>
+            </div>
+          </div>
+
+
+          <div class="col-sm-4">
+              <div class="card">
+                  <div class="card-body">
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>請填寫身份證上的中文名字:</label>
+              <input type="text" name="guest_name" class="form-control" placeholder="請填寫身份證上的中文名字" >
+              {{-- validator 驗證是否有填值 --}} 
+              @if(hasErrorFor('guest_name'))
+              <small class="form-text text-danger">請填姓名</small>
+              @endif 
+              {{-- =================================== --}}
+            </div>
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>行動電話:</label>
+              <input type="text" name="cell_phone" class="form-control" placeholder="請輸入您的行動電話號碼" aria-describedby="phoneHelp" >
+            
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('cell_phone'))
+              <small class="form-text text-danger">請填入手機號碼</small>
+              @endif
+              {{--  ===================================  --}}
+              
+
+            </div>
+
+            <div class="form-group" id="birdaybody">
+              <label>
+                <span class="isneedicon">*</span>出生日期:</label>
+              {{-- 生日 年 --}}
+
+              <span class="form-inline">
+                年:
+                <select id="#birth_Y" class="form-control" v-model="birthday_Y2" >
+                  <option v-for="birthday_Y in birthday_Y">
+                    [[birthday_Y]]
+                  </option>
+                </select>
+                月:
+                <select id="#birth_M" class="form-control" v-model="birthday_M2" >
+                  <option v-for="birthday_M in birthday_M">
+                    [[birthday_M]]
+                  </option>
+                </select>
+                日:
+                <select id="#birth_D" class="form-control" v-model="birthday_D2" >
+                  <option v-for="birthday_D in birthday_D">
+                    [[birthday_D]]
+                  </option>
+                </select>
+
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('birthday'))
+              <small class="form-text text-danger">請選擇生日</small>
+              @endif
+              {{--  ===================================  --}}
+              
+                <div style="display:none">
+                  <input type="text" name="birthday" class="form-control" v-model="combination_birthday" >
+                  <div class="Invisible"> [[combination_birthday]] </div>
+                </div>
+              </span>
+            </div>
+
+            <div class="form-group">
+              <label>
+                <span class="isneedicon">*</span>E-mail:</label>
+              <input type="email" name="email" class="form-control" aria-describedby="emailHelp" >
+              {{--  validator 驗證是否有填值  --}}
+              @if(hasErrorFor('email'))
+              <small class="form-text text-danger">請填入email</small>
+              @endif
+              {{--  ===================================  --}}
+            </div>
+            <div class="form-group">
+              <label>特殊需求:</label>
+              <textarea name="special_need" cols="30" rows="7" class="form-control" >
+              </textarea>
+            </div>
+            <input type="text" name="guest_invoice" class="Invisible" value="{{invoicenum}}">
+          </div>
+        </div>
+      </div>
+    </div>
+ </div>
+    <div class="col-sm-2"></div>
+    <div style="height:40px;"></div>
+    <div class="row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2">
+        <button id="submitbtn" class="btn form-control btn-info">確認預約</button>
+      </div>
+      <div class="col-sm-5"></div>
+    </div>
+</form>
+
+
+<select id="invisible_storearea" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.store_area}}</option> 
+  @endeach
+</select>
+
+<select id="invisible_storenamed" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.store_name}}</option>
+  @endeach
+</select>
+
+<select id="invisible_store_status_date" class="Invisible">
+  @each(item in store_status)
+  <option value="{{item.store_id}}">{{item.date}}</option>
+  @endeach
+</select>
+
+<select id="invisible_store_status_time" class="Invisible">
+  @each(item in store_status)
+  <option value="{{item.store_id}}">{{item.time}}</option>
+  @endeach
+</select>
+
+<select id="invisible_storetime" class="Invisible">
+  @each(item in restructur_storeinfo)
+  <option value="{{item.id}}">{{item.time_id}}</option>
+  @endeach
+</select>
+
+{{ script('https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js')}}
+{{ script('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')}}
+{{ script('../js/guestinfo.js') }}
+{{ script('../js/onlyguestinfo.js') }}
+
+
+
+@endsection

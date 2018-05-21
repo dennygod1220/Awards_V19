@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge"> 
+  {{css('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css')}} 
+  {{css('../index.css')}}
+  <title>Audrey奧黛莉內衣體驗活動</title>
+  {{css('../footer_icon.css')}}
+  <style>
+.row {  
+    margin-left: -15px;  
+    margin-right: -15px;  
+}  
+.container-fluid {  
+    margin-left: auto;  
+    margin-right: auto;  
+    padding-left: 15px;  
+    padding-right: 15px;  
+}  
+body{
+      overflow-x: hidden;
+}
+.ui-datepicker {
+  font-size: 25px !important;
+}
+.ui-datepicker .ui-datepicker-next .ui-icon{
+    background: url(http://i.imgur.com/DyQTbOA.png);
+    width: 50px;
+    height: 50px;
+    left:0px;
+    top:9px;
+}
+.ui-datepicker .ui-datepicker-prev .ui-icon {
+    background: url(http://i.imgur.com/hBFw2TW.png);
+    width: 50px;
+    height: 50px;
+    position:absolute;
+    left:12px;
+    top:9px;
+}
+td.disabled{
+  background-color:red;
+}
+  </style>
+  <script>
+        function IEVersion() {
+          var userAgent = navigator.userAgent; //取得浏览器的userAgent字符串  
+          var isIE = userAgent.indexOf("compatible") > -1 && userAgent.indexOf("MSIE") > -1; //判断是否IE<11浏览器  
+          var isEdge = userAgent.indexOf("Edge") > -1 && !isIE; //判断是否IE的Edge浏览器  
+          var isIE11 = userAgent.indexOf('Trident') > -1 && userAgent.indexOf("rv:11.0") > -1;
+          if (isIE) {
+            var reIE = new RegExp("MSIE (\\d+\\.\\d+);");
+            reIE.test(userAgent);
+            var fIEVersion = parseFloat(RegExp["$1"]);
+            if (fIEVersion == 7) {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+            } else if (fIEVersion == 8) {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+            } else if (fIEVersion == 9) {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+            } else if (fIEVersion == 10) {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+            } else {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+            }
+          } else if (isEdge) {
+            return 'edge'; //edge
+          } else if (isIE11) {
+            alert("您目前正在使用IE瀏覽器，為了更好的瀏覽品質，建議您使用chrome或是firefox開啟，謝謝"); 
+          } 
+        }
+        IEVersion()
+  </script>
+</head>
+
+<body>
+  @include('layout/auth/nav')
+
+  <div class="container-fluid" style="padding:0px">
+    @!section('content')
+
+    <div style="height:50px"></div>
+
+    <div class="row">
+      <div class="col-sm-5"></div>
+      <div class="col-sm-2" id="trackingaudrey">追蹤Audrey奧黛莉</div>
+      <div class="col-sm-5"></div>
+    </div>
+    <div style="height:30px"></div>
+
+
+
+    <div class="wrp">
+      <a class="icon icon-twitter" href="https://zh-tw.facebook.com/twaudrey/" target="_blank">
+        <img class="img-fluid" src="../img/new/fb@2x.png" alt="">
+      </a>
+      <a class="icon icon-facebook" href="https://www.instagram.com/audrey_lingerie_tw/" target="_blank">
+        <img class="img-fluid" src="../img/new/ig@2x.png" alt="">
+      </a>
+      <a class="icon icon-instagram" href="https://www.youtube.com/user/autw100" target="_blank">
+        <img class="img-fluid" src="../img/new/youtube@2x.png" alt="">
+      </a>
+      <a class="icon icon-instagram" href="https://www.audrey.com.tw/" target="_blank">
+        <img class="img-fluid" src="../img/0510/index/homebtn.png" alt="">
+      </a>
+    </div>
+
+  </div>
+    @include('layout/normalUser/footer')
+
+  </div>
+
+
+  {{ script('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')}}
+  {{ script('https://code.jquery.com/jquery-3.2.1.slim.min.js') }} 
+  {{ script('https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js')}}
+  {{ script('https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js') }}
+
+
+<script src="https://cdn.bootcss.com/moment.js/2.18.1/moment-with-locales.min.js"></script>    
+<link href="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/css/bootstrap-datetimepicker.min.css" rel="stylesheet">    
+<script src="https://cdn.bootcss.com/bootstrap-datetimepicker/4.17.47/js/bootstrap-datetimepicker.min.js"></script>    
+<script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.19.1/locale/af.js"></script>
+
+
+<link rel="stylesheet" href="../fordate.css">
+<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.6.3/css/font-awesome.css" rel="stylesheet"/>
+{{--  月曆元件  --}}
+<script type="text/javascript">
+  $(function () {
+
+    var MinStartDay = moment('2018-05-18');
+    var minDate = moment().add(3,'days');
+    var maxDate = moment("2018-06-19");    
+    //限制只能選擇3天候
+    $('#date1').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-cn'),
+      inline: true,
+      sideBySide: true,
+      keepOpen: true,
+      minDate: minDate,
+      maxDate: maxDate,
+      disabledDates: [
+      moment("2018-06-18"),
+      ],
+      icons: {
+        up: "fa fa-chevron-circle-up",
+        down: "fa fa-chevron-circle-down",
+        next: 'fa fa-chevron-circle-right',
+        previous: 'fa fa-chevron-circle-left'
+      }
+    });
+    $('#date1').datetimepicker('show');
+
+
+const StoreAndTime_len = $("#invisible_storetime").children().length;
+var StoreAndTime_time = [];
+var StoreAndTime_store = [];
+for(let x=0;x< StoreAndTime_len;x++){
+  StoreAndTime_store[x] = $("#invisible_storetime option").eq(x).val();
+  StoreAndTime_time[x] = $("#invisible_storetime option").eq(x).text();
+}
+
+$("#store_id").change(function(){
+
+  var store = $("#store_id").val()-1;
+  //time = 12 時
+  if(StoreAndTime_time[store] == 12){
+    	$('#date1').datetimepicker('destroy');
+        var disable_date =  [
+          moment("2018-05-18"),
+          moment("2018-05-20"),
+          moment("2018-06-19"),        
+        ] 
+    $('#date1').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-cn'),
+        inline: true,
+        sideBySide: true,
+        keepOpen: true,
+        minDate:  moment("2018-06-11"),
+        maxDate:  moment("2018-06-19"),     
+        //disabledDates: disable_date
+
+        icons: {
+        up: "fa fa-chevron-circle-up",
+        down: "fa fa-chevron-circle-down",
+        next: 'fa fa-chevron-circle-right',
+        previous: 'fa fa-chevron-circle-left'
+      }
+    });
+    $('#date1').datetimepicker('show');
+  }
+  else if(StoreAndTime_time[store] == 11){
+    	$('#date1').datetimepicker('destroy');
+        var disable_date =  [
+          moment("2018-06-15"),
+          moment("2018-06-19"),
+        ] 
+    $('#date1').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-cn'),
+        inline: true,
+        sideBySide: true,
+        keepOpen: true,
+        minDate:  moment("2018-06-10"),
+        maxDate:  moment("2018-06-19"),     
+        disabledDates: disable_date,
+              icons: {
+        up: "fa fa-chevron-circle-up",
+        down: "fa fa-chevron-circle-down",
+        next: 'fa fa-chevron-circle-right',
+        previous: 'fa fa-chevron-circle-left'
+      }
+    });
+    $('#date1').datetimepicker('show');
+  }
+
+  //選完店櫃後如果非特殊店櫃所渲染的月曆
+  else{
+
+    	$('#date1').datetimepicker('destroy');
+        var minDate;
+        var MinStartDay = moment('2018-05-18');      
+        var nowDate = moment();
+        if(nowDate < MinStartDay){
+          minDate = MinStartDay;
+        }else{
+          minDate = moment().add(3,'days');
+        }
+      $('#date1').datetimepicker({
+      format: 'YYYY-MM-DD',
+        locale: moment.locale('zh-cn'),
+        inline: true,
+        sideBySide: true,
+        keepOpen: true,
+        minDate: minDate,
+        maxDate: maxDate,
+        disabledDates: [
+          moment("2018-06-19"),
+        ],
+        icons: {
+          up: "fa fa-chevron-circle-up",
+          down: "fa fa-chevron-circle-down",
+          next: 'fa fa-chevron-circle-right',
+          previous: 'fa fa-chevron-circle-left'
+        }
+    });
+    $('#date1').datetimepicker('show');
+  }
+})
+var wdth = $(window).width();
+  if (wdth < 450) {
+      $("#audreyLogo").css("max-height", "70px")
+  }else{
+    $("#audreyLogo").css("max-height", "124px")
+  }
+$(window).resize(function () {
+  const wdth = $(window).width();
+  if (wdth < 450) {
+      $("#audreyLogo").css("max-height", "70px")
+  }else{
+    $("#audreyLogo").css("max-height", "124px")
+  }
+})
+
+});
+
+</script>
+</body>
+</html>

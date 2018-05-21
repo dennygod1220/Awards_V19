@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+</head>
+
+<body>
+<ul id="myul">
+
+</ul>
+
+    <script>
+        function getCode(n) {
+            var all = "azxcvbnmsdfghjklqwertyuiopZXCVBNMASDFGHJKLQWERTYUIOP0123456789";
+            var b = "";
+            for (var i = 0; i < n; i++) {
+                var index = Math.floor(Math.random() * 62);
+                b += all.charAt(index);
+
+            }
+            return b;
+        };
+
+           var ul = document.getElementById('myul');
+        for(var i=0;i<111;i++){
+        //    ul.appendChild(newListItem)= "<li>"+getCode(5)+"</li>";
+            var data = "<li>"+getCode(5)+"</li>";
+           document.getElementById('myul').innerHTML += data;
+        }
+    </script>
+</body>
+
+</html>
