@@ -25,7 +25,7 @@ $(document).ready(function () {
 
   $("#date").change(function () {
     $.ajax({
-      url: "/qu_aja",
+      url: "/AudreySP/qu_aja",
       type: "GET",
       data: {
         store_name: $('#store_name_in :selected').text(),
@@ -67,7 +67,7 @@ $(document).ready(function () {
 //選擇時段後像server要該日該時段的客戶資料
     $("#time").change(function () {
     $.ajax({
-      url: "/qu_aja2",
+      url: "/AudreySP/qu_aja2",
       type: "GET",
       data: {
         store_name: $('#store_name_in :selected').text(),

@@ -97,6 +97,6 @@ Route.get('/AudreySP/downloadGu','HiAudreyController.downloadguestinfo')
 
 // });
 
-Route.get('/qu_aja','QuestionController.ajatime')
-Route.get('/qu_aja2','QuestionController.ajatime2')
+Route.get('/AudreySP/qu_aja','QuestionController.ajatime')
+Route.get('/AudreySP/qu_aja2','QuestionController.ajatime2')
 

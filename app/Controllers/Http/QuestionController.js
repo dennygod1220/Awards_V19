@@ -86,42 +86,35 @@ class QuestionController {
           var hello = await XlsxPopulate.fromBlankAsync()
             .then(async workbook => {
 
-              const r = workbook.sheet(0).range("B1:AA1");
+              const r = workbook.sheet(0).range("A1:L1");
               r.value([
-                ["櫃號", "櫃名", "試穿日期", "試穿尺寸", "尺碼", "未完成原因", "是否完成"],
+                ["櫃號", "櫃名", "預約日期", "時段", "姓名", "行動電話", "驗證碼","試穿尺寸","兌換尺寸","是否完成","未完成原因","兌換貨號"],
               ]);
-              workbook.sheet(0).range("B1:I1").style({
+              workbook.sheet(0).range("A1:L1").style({
                 fontColor: "ffffff",
                 fill: "272727",
                 horizontalAlignment: 'center'
               });
 
               //===================抓資料
-              const question_data = await questionM.all();
-            //   const question_data2 = question_data.toJSON();
-             const question_data2 = await Database.select('qu_store_num','qu_store_name','qu_test_date','qu_test_size','qu_size','qu_1_1_1','qu_2_1').from('questionnaires');
-      
-              for(let i=0;i<question_data2.length;i++){
-                  question_data2[i].qu_test_date = moment2(question_data2[i].qu_test_date).format("YYYY-MM-DD");
-              }
-
-              var datacount = question_data2.length;
-              var arr = [];
-              var arr2 =[];
-              var rr = [];
-              for(let i =0;i<datacount;i++){
-                rr[i] =  workbook.sheet(0).range("B"+(i+2)+":I"+(i+2));
-
-                  var qus = question_data2[i];
-                  for(var ob in qus){
-                      arr2.push(qus[ob]);
-                  }
-                  arr.push(arr2);
-                  rr[i].value(arr);
-                  arr.length=0;
-                  arr2.length=0;
-              }
+              var quData = await Database.select('qu_store_num','qu_store_name','qu_test_date','qu_test_size','qu_size','qu_1_1_1','qu_2_1','qu_1_1_2','qu_1_1_3','qu_1_2_2','qu_1_2_1','qu_1_2_3').from('questionnaires')
               
+              for(var i=0;i<quData.length;i++){
+                  quData[i].qu_test_date=moment2(quData[i].qu_test_date).format("YYYY-MM-DD");
+                  workbook.sheet("Sheet1").cell("A"+(i+2)).value(quData[i].qu_store_num); 
+                  workbook.sheet("Sheet1").cell("B"+(i+2)).value(quData[i].qu_store_name);                  
+                  workbook.sheet("Sheet1").cell("C"+(i+2)).value(quData[i].qu_test_date);                  
+                  workbook.sheet("Sheet1").cell("D"+(i+2)).value(quData[i].qu_1_1_2);                  
+                  workbook.sheet("Sheet1").cell("E"+(i+2)).value(quData[i].qu_1_1_3);                  
+                  workbook.sheet("Sheet1").cell("F"+(i+2)).value(quData[i].qu_1_2_2);                  
+                  workbook.sheet("Sheet1").cell("G"+(i+2)).value(quData[i].qu_1_2_1);                  
+                  workbook.sheet("Sheet1").cell("H"+(i+2)).value(quData[i].qu_test_size);                  
+                  workbook.sheet("Sheet1").cell("I"+(i+2)).value(quData[i].qu_size);     
+                  workbook.sheet("Sheet1").cell("J"+(i+2)).value(quData[i].qu_2_1);                  
+                  workbook.sheet("Sheet1").cell("K"+(i+2)).value(quData[i].qu_1_1_1);                  
+                  workbook.sheet("Sheet1").cell("L"+(i+2)).value(quData[i].qu_1_2_3);                                                 
+                                   
+              }
 
               //建立此excel檔案到server
               // Write to file.

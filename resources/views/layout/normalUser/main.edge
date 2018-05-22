@@ -268,6 +268,43 @@ $(window).resize(function () {
   }
 })
 
+$("#store_id").change(function () {
+  if ($("#store_id :selected").text() == "Audrey 台北西藏店") {
+    $('#date1').datetimepicker('destroy');
+    var minDate;
+    var MinStartDay = moment('2018-05-18');
+    var nowDate = moment();
+    if (nowDate < MinStartDay) {
+      minDate = MinStartDay;
+    } else {
+      minDate = moment().add(3, 'days');
+    }
+    $('#date1').datetimepicker({
+      format: 'YYYY-MM-DD',
+      locale: moment.locale('zh-cn'),
+      inline: true,
+      sideBySide: true,
+      keepOpen: true,
+      minDate: minDate,
+      maxDate: maxDate,
+      disabledDates: [
+        moment("2018-05-29"),
+        moment("2018-06-05"),
+        moment("2018-06-12"),   
+        moment("2018-06-19"),                     
+      ],
+      icons: {
+        up: "fa fa-chevron-circle-up",
+        down: "fa fa-chevron-circle-down",
+        next: 'fa fa-chevron-circle-right',
+        previous: 'fa fa-chevron-circle-left'
+      }
+    });
+    $('#date1').datetimepicker('show');
+
+  }
+})
+
 });
 
 </script>
