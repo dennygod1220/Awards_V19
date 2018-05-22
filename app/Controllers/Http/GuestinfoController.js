@@ -76,3 +76,4 @@ class GuestinfoController {
 
 
 module.exports = GuestinfoController
+
