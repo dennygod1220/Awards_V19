@@ -91,7 +91,7 @@ class HiAudreyController {
                 for(var i=0;i<guestdata.length;i++){
                   guestdata[i].date = moment2(guestdata[i].date).format("YYYY-MM-DD");
                   guestdata[i].birthday = moment2(guestdata[i].birthday).format("YYYY-MM-DD"); 
-                  guestdata[i].created_at = moment2(guestdata[i].created_at).format("YYYY-MM-DD hh:mm:ss");                  
+                  guestdata[i].created_at = moment2(guestdata[i].created_at).format("YYYY-MM-DD HH:mm:ss");                  
                                    
                   workbook.sheet("Sheet1").cell("A"+(i+2)).value(guestdata2[i].StoreInfo.store_name);
                   workbook.sheet("Sheet1").cell("B"+(i+2)).value(guestdata[i].date); 
