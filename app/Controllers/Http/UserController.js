@@ -46,7 +46,7 @@ class UserController {
                     error: '您已經登入過了喔!! 請直接選擇您要進行的操作!!'
                 })
 
-                return response.redirect('back');
+                return response.route('/AudreySP/HiAudrey');
             } else {
                 console.log("錯誤:"+error)
                 session.flash({

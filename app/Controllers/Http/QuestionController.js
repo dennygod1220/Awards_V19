@@ -37,14 +37,23 @@ class QuestionController {
         }
     }
 
-    async writequestion({ view,session }){
+    async writequestion({ view,session,auth }){
         const store_info = await Database.select('store_num','store_name').from('store_infos')
         // const store_data = store_info.toJSON();
 
-        return view.render('hiaudrey.question',{
-            store_data:store_info,
-            SessionUser:session.get('username')+"你好"
-        })
+        if(auth.user.id==1){
+            return view.render('hiaudrey.question',{
+                store_data:store_info,
+                SessionUser:session.get('username')+"你好"
+            })
+        }else{
+            return view.render('hiaudrey.question2',{
+                store_data:store_info,
+                SessionUser:session.get('username')+"你好"
+            })
+        }
+
+
     }
 
 //新增

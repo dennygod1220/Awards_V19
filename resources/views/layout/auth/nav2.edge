@@ -1,0 +1,54 @@
+<style>
+  .nav-link {
+    color: white;
+  }
+.navbar-dark .navbar-nav .nav-link {
+    color: #f8f9fa;
+    font-weight: bold;
+    font-size: 16px;
+}
+</style>
+{{--  最上面logo  --}}
+<div class="container-fluid" style="padding:0px;">
+  <a href="/AudreySP/">
+    <p class="text-center">
+      <img src="../img/new/audreylogo.png" style="align:center" class="img-responsive center-block" alt="">          
+    </p>
+  </a>
+{{--  導頁欄  --}}
+<nav class="navbar navbar-expand-lg navbar-dark" style="background-color:#212529">
+  <div class="container-fluid">
+    <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbar10">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    <div class="navbar-collapse collapse" id="navbar10">
+      <ul class="navbar-nav nav-fill w-100" style="color:white;">
+        <li class="nav-item">
+          <a href="/AudreySP/HiAudrey" class="nav-item nav-link">門市試穿客戶資料區</a>
+        </li>
+
+        <li class="nav-item">
+          <a href="/AudreySP/question" class="nav-item nav-link">門市回報區</a>
+        </li>
+
+
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="#">{{SessionUser}}</a>
+        </li>
+        @loggedIn
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="/AudreySP/auth/logout">登出</a>
+        </li>
+        @else
+
+        <li class="nav-item">
+          <a class="nav-item nav-link" href="/AudreySP/auth/signin">登入</a>
+        </li>
+        @endloggedIn
+      </ul>
+    </div>
+  </div>
+</nav>
+
+
+</div>

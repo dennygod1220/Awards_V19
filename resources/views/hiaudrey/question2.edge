@@ -1,0 +1,259 @@
+
+@layout('layout/auth/main2')
+ @section('content')
+
+<script src="http://www.w3school.com.cn/jquery/jquery.js"></script>
+ <script>
+$(document).ready(function () {
+
+  //當有人重新選擇店櫃時
+  $("#store_name_in").change(function(){
+    $("#date").val("");
+    $("#time option").remove();
+    $("#time").append($("<option></option>").attr("value", "").text("請選擇時段"));
+    $("#real_time_in").val("");
+    $("#name option").remove();
+    $("#validatornum").val("");
+    $("#size").val("");       
+    $("#phone").val("");           
+  })
+  //當選擇時段時，將選擇的值同步到input
+  $("#time").change(function(){
+    
+    $("#real_time_in").val($("#time :selected").text());
+  })
+
+  $("#date").change(function () {
+    $.ajax({
+      url: "/AudreySP/qu_aja",
+      type: "GET",
+      data: {
+        store_name: $('#store_name_in :selected').text(),
+        date: $("#date").val()
+      },
+      //client將選擇的店櫃傳給server ，server再將該店櫃的時段傳給client
+      success: function (data) {
+        //client接收到server回傳的時段id 
+        var time_id = data;
+        $("#time option").remove();
+        $("#time").append($("<option></option>").attr("value", "").text("請選擇時段"));
+        for (var x = 0; x < time_stack[time_id].length; x++) {
+          $("#time").append($("<option></option>").attr("value", time_stack[time_id][x]).text(time_stack[time_id][x]));
+        }
+      },
+      error: function () {
+        alert('請重新整理');
+      }
+    });
+  });
+
+
+  var time_stack = [
+    ["11:00", "12:00", "13:00", "14:00", "15:00", "16:00", "17:00", "18:00", "19:00"],
+    ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
+    ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+    ['12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+    ['13:00', '14:00', '15:00', '16:00', '17:00'],
+    ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+    ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
+    ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00'],
+    ['14:00', '15:00', '16:00', '17:00', '18:00', '19:00'],
+    ['14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00'],
+    ['16:00', '17:00', '18:00', '19:00', '20:00'],
+    ['13:00', '14:00', '15:00', '16:00', '17:00', '18:00'],
+    ['11:00', '12:00', '13:00', '14:00', '15:00', '16:00', '17:00', '18:00', '19:00', '20:00', '21:00']
+  ]
+
+//選擇時段後像server要該日該時段的客戶資料
+    $("#time").change(function () {
+    $.ajax({
+      url: "/AudreySP/qu_aja2",
+      type: "GET",
+      data: {
+        store_name: $('#store_name_in :selected').text(),
+        date: $("#date").val(),
+        time: $('#time :selected').text(),        
+      },
+    
+      success: function (data) {
+
+        $("#validatornum").val("");
+        $("#size").val("");    
+        $("#phone").val("");           
+        $("#name option").remove();        
+        $("#name").append($("<option></option>").attr("value", "沒選").text(""));        
+        for (var x = 0; x < data.length; x++) {
+          $("#name").append($("<option></option>").attr("value", x).text(data[x].guest_name));
+        }
+
+        $("#name").change(function(){
+          var name_num = $("#name :selected").val();
+          $("#phone").val(data[name_num].cell_phone);
+          $("#validatornum").val(data[name_num].validator_num);
+          $("#size").val(data[name_num].guest_size);       
+          $("#real_name_in").val($("#name :selected").text());   
+        })
+
+      },
+      error: function () {
+        alert('請重新整理');
+      }
+    });
+  });
+
+
+})
+
+  </script>
+{{--  -------------------------------------------------------------------------------------------------------------------------------------  --}}
+<div class="row" style="height:50px" id="magicalDIV">
+</div>
+
+{{--  ====================================================================================  --}}
+
+
+
+ 
+<style>
+    {{--  隱藏的form input  --}}
+    .Invisible {
+      display: none;
+    }
+    {{--  紅色的星號  --}}
+    .isneedicon{
+        color:red;
+    }
+</style>
+
+<div style="height:40px;"></div>
+
+<div class="container-fluid">
+
+    {{-- ========================================= --}}
+<form action="{{ route('QuestionController.store')}}" method="POST" id="quest_form">
+  {{ csrfField() }}
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">櫃號:</label>
+    <div class="col">
+        <input type="text" name="qu_store_num" class="form-control" id="real_store_num" readonly>
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">櫃名:</label>
+    <div class="col">
+        <select id="store_name_in" class="form-control">
+            <option value="">請選擇櫃名</option>
+            @each(item in store_data)
+            <option value="{{item.store_num}}">{{item.store_name}}</option>
+            @endeach
+        </select>
+        <input type="text" name="qu_store_name" class="form-control" id="real_store_name" style="display:none">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">預約日期:</label>
+    <div class="col">
+        <input type="date" name="qu_test_date" class="form-control" aria-describedby="emailHelp" id="date">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">時段:</label>
+    <div class="col">
+        <select id="time" class="form-control">
+            <option value="">請選擇時段</option>
+        </select>
+        <input type="text" name="qu_1_1_2" class="form-control" id="real_time_in" style="display:none">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">姓名:</label>
+    <div class="col">
+        <select id="name" class="form-control">
+            <option value=""></option>
+        </select>
+        <input type="text" name="qu_1_1_3" class="form-control" id="real_name_in" style="display:none">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">行動電話:</label>
+    <div class="col">
+        <input type="text" name="qu_1_2_2" class="form-control" id="phone">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">驗證碼:</label>
+    <div class="col">
+        <input type="text" name="qu_1_2_1" class="form-control" id="validatornum">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">試穿尺寸:</label>
+    <div class="col">
+        <input type="text" name="qu_test_size" class="form-control" id="size">
+    </div>
+</div>
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">兌換尺寸:</label>
+    <div class="col">
+        <input type="text" name="qu_size" class="form-control">
+    </div>
+</div>
+
+
+
+<div class="form-group">
+<label>是否完成 : </label>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="qu_2_1" id="inlineRadio1" value="是">
+    <label class="form-check-label" for="inlineRadio1">是</label>
+  </div>
+  <div class="form-check form-check-inline">
+    <input class="form-check-input" type="radio" name="qu_2_1" id="inlineRadio2" value="否">
+    <label class="form-check-label" for="inlineRadio2">否</label>
+  </div>
+</div>
+
+<div class="form-group">
+    <label>未完成原因:</label>
+    <textarea name="qu_1_1_1" cols="30" rows="8" class="form-control">
+    </textarea>
+</div>
+
+
+<div class="form-group">
+    <label for="staticEmail" class="col-form-label">兌換貨號:</label>
+    <div class="col">
+        <input type="text" name="qu_1_2_3" class="form-control">
+    </div>
+</div>
+
+<input type="submit" value="送出問卷" class="btn btn-outline-info">
+
+</form>
+
+</div>
+{{ script('https://cdn.bootcss.com/jquery/3.2.1/jquery.min.js')}}
+{{ script('https://cdn.jsdelivr.net/npm/vue/dist/vue.js')}}
+{{ script('../js/question.js') }}
+
+
+<script>
+$(function(){
+  $("#store_name_in").change(function(){
+    var txt = $('#store_name_in :selected').text();
+    $("#real_store_name").val(txt);
+    $("#real_store_num").val($("#store_name_in").val())
+  })
+})
+
+</script>
+@endsection
+
